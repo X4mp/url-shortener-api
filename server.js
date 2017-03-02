@@ -31,7 +31,7 @@ app.get('/new/:url*', function(req, res) {
     } else {
         hash = db.get(url);
     }
-    var shorturl = 'https://herko.com/' + hash.toString();
+    var shorturl = 'https://ancient-everglades-90384.herokuapp.com' + hash.toString();
     res.write(JSON.stringify({'short-url' : shorturl}));
     res.end()
 

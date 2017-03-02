@@ -15,37 +15,43 @@ app.get('/', function(req, res) {
 });
 
 app.get('/new/:url*', function(req, res) {
-    console.log('new');
+ //   console.log('new');
     var url = req.url.slice(5);
     if(!validator.isUri(url)) {
         res.write(JSON.stringify({'error' : 'Invalid Url format'}));
         res.end();
         return
-    } 
+    }
 
     if(typeof(db.get(url)) == 'undefined') {
-        db.set(url, count.toString());
+        db.set(count.toString(), url);
         console.log('write ' + url + '  db');
         hash = count;
-        count += 1;        
+        count += 1;
     } else {
         hash = db.get(url);
-    } 
+    }
     var shorturl = 'https://herko.com/' + hash.toString();
     res.write(JSON.stringify({'short-url' : shorturl}));
-    res.end() 
+    res.end()
 
 });
 
 app.get('/:url', function(req, res) {
-    console.log('redirect');
+ //   console.log('redirect');
     var url = req.url.slice(1);
-    if(typeof(db.get(url)) == 'undefined') {
+    if(url == 'favicon.ico') {
+        return
+    }
+    resolve = db.get(url)
+    console.log(resolve)
+
+    if(typeof(resolve) == 'undefined') {
         res.write(JSON.stringify({'error' : 'unknown short-url'}));
         res.end();
     }
 
-    res.redirect('https://losfuzzys.github.io');
+    res.redirect(resolve);
     res.end();
 });
 
